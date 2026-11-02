@@ -15,6 +15,11 @@ MENU = """
 """
 
 
+def textos_iguais(texto1, texto2):
+    """Compara dois textos sem diferenciar maiúsculas, minúsculas e espaços nas pontas."""
+    return texto1.strip().lower() == texto2.strip().lower()
+
+
 def ler_numero(mensagem, tipo=float):
     texto = input(mensagem).strip().replace(",", ".")
     try:
@@ -25,14 +30,14 @@ def ler_numero(mensagem, tipo=float):
 
 def buscar_aluno(alunos, nome):
     for aluno in alunos:
-        if aluno.nome.lower() == nome.strip().lower():
+        if textos_iguais(aluno.nome, nome):
             return aluno
     raise DadoInvalidoError(f"Aluno '{nome.strip()}' não encontrado.")
 
 
 def cadastrar(alunos):
     novo = criar_aluno(input("Nome do aluno: "), input("Turma: "))
-    if any(a.nome.lower() == novo.nome.lower() for a in alunos):
+    if any(textos_iguais(a.nome, novo.nome) for a in alunos):
         raise DadoInvalidoError("Já existe um aluno com esse nome.")
     alunos.append(novo)
     print("Aluno cadastrado.")
@@ -68,8 +73,8 @@ def ver_boletim(alunos):
 
 
 def relatorio_turma(alunos):
-    turma = input("Turma: ").strip().lower()
-    da_turma = [a for a in alunos if a.turma.lower() == turma]
+    turma = input("Turma: ")
+    da_turma = [a for a in alunos if textos_iguais(a.turma, turma)]
     if not da_turma:
         raise DadoInvalidoError("Nenhum aluno cadastrado nessa turma.")
     for aluno in da_turma:
