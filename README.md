@@ -34,14 +34,47 @@ Requer Python 3.10 ou superior. Não há dependências externas.
 python -m src.main
 ```
 
+## Dependências e gerenciador de pacotes
+
+O programa usa apenas a biblioteca padrão do Python (`unittest`, `json`, `dataclasses`, `pathlib`), então **não há dependências para instalar**.
+
+O gerenciador de pacotes do projeto é o **pip**. Ele só é usado para a ferramenta de cobertura de testes, listada em `requirements-dev.txt`:
+
+```
+python -m pip install -r requirements-dev.txt
+```
+
 ## Como rodar os testes
 
 ```
 python -m unittest discover -s tests -t . -v
 ```
 
+São 47 testes unitários, um arquivo de testes para cada arquivo do código.
+
+## Cobertura de testes
+
+```
+python -m coverage run --source=src -m unittest discover -s tests -t .
+python -m coverage report -m
+```
+
+Para ver o relatório linha a linha no navegador: `python -m coverage html` e abrir `htmlcov/index.html`.
+
+## Estrutura do projeto
+
+| Arquivo | Responsabilidade |
+|---|---|
+| `src/main.py` | Menu da aplicação e tratamento de erros |
+| `src/aluno.py` | Dados do aluno e montagem do boletim |
+| `src/media.py` | Validação das notas e cálculo da média |
+| `src/frequencia.py` | Cálculo da frequência e da situação final |
+| `src/armazenamento.py` | Leitura e gravação dos dados em `dados.json` |
+| `src/erros.py` | Exceção própria para dados inválidos |
+| `tests/` | Testes unitários de cada arquivo |
+
 ## Organização do repositório
 
 - Git Flow: `main` (versão estável), `develop` (integração) e `feature/*` (uma por funcionalidade).
 - Commits semânticos: `feat:`, `fix:`, `test:`, `refactor:`, `docs:`, `ci:`.
-- CI: GitHub Actions executa os testes a cada push e pull request.
+- CI: GitHub Actions executa os testes e mede a cobertura a cada push e pull request.
