@@ -50,7 +50,7 @@ python -m pip install -r requirements-dev.txt
 python -m unittest discover -s tests -t . -v
 ```
 
-São 47 testes unitários, um arquivo de testes para cada arquivo do código.
+São 50 testes unitários, um arquivo de testes para cada arquivo do código.
 
 ## Cobertura de testes
 

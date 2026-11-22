@@ -20,8 +20,17 @@ def textos_iguais(texto1, texto2):
     return texto1.strip().lower() == texto2.strip().lower()
 
 
+def ler_obrigatorio(mensagem):
+    """Repete a pergunta até o usuário digitar alguma coisa."""
+    while True:
+        texto = input(mensagem).strip()
+        if texto:
+            return texto
+        print("Campo obrigatório. Digite uma resposta.")
+
+
 def ler_numero(mensagem, tipo=float):
-    texto = input(mensagem).strip().replace(",", ".")
+    texto = ler_obrigatorio(mensagem).replace(",", ".")
     try:
         return tipo(texto)
     except ValueError:
@@ -36,7 +45,7 @@ def buscar_aluno(alunos, nome):
 
 
 def cadastrar(alunos):
-    novo = criar_aluno(input("Nome do aluno: "), input("Turma: "))
+    novo = criar_aluno(ler_obrigatorio("Nome do aluno: "), ler_obrigatorio("Turma: "))
     if any(textos_iguais(a.nome, novo.nome) for a in alunos):
         raise DadoInvalidoError("Já existe um aluno com esse nome.")
     alunos.append(novo)
@@ -44,13 +53,13 @@ def cadastrar(alunos):
 
 
 def lancar_nota(alunos):
-    aluno = buscar_aluno(alunos, input("Nome do aluno: "))
+    aluno = buscar_aluno(alunos, ler_obrigatorio("Nome do aluno: "))
     aluno.adicionar_nota(ler_numero("Nota (0 a 10): "))
     print("Nota lançada.")
 
 
 def lancar_faltas(alunos):
-    aluno = buscar_aluno(alunos, input("Nome do aluno: "))
+    aluno = buscar_aluno(alunos, ler_obrigatorio("Nome do aluno: "))
     total = ler_numero("Total de aulas dadas: ", int)
     faltas = ler_numero("Número de faltas: ", int)
     aluno.registrar_frequencia(total, faltas)
@@ -68,12 +77,12 @@ def formatar_boletim(dados):
 
 
 def ver_boletim(alunos):
-    aluno = buscar_aluno(alunos, input("Nome do aluno: "))
+    aluno = buscar_aluno(alunos, ler_obrigatorio("Nome do aluno: "))
     print(formatar_boletim(aluno.boletim()))
 
 
 def relatorio_turma(alunos):
-    turma = input("Turma: ")
+    turma = ler_obrigatorio("Turma: ")
     da_turma = [a for a in alunos if textos_iguais(a.turma, turma)]
     if not da_turma:
         raise DadoInvalidoError("Nenhum aluno cadastrado nessa turma.")
