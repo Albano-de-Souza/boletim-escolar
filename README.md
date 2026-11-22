@@ -25,7 +25,13 @@ risco de reprovação, permitindo intervir antes do fim do período.
   - média a partir de 6,0: APROVADO
   - média de 4,0 a 5,9: RECUPERAÇÃO
   - média abaixo de 4,0: REPROVADO
+## Validações
 
+- Todos os campos do menu são obrigatórios: o sistema repete a pergunta até o usuário responder.
+- Nota: precisa ser um número de 0 a 10.
+- Frequência: aulas dadas maior que zero, e faltas entre zero e o total de aulas.
+- Nome repetido não pode ser cadastrado.
+- Em caso de erro, o sistema mostra a mensagem e volta ao menu, sem fechar.
 ## Como executar
 
 Requer Python 3.10 ou superior. Não há dependências externas.
