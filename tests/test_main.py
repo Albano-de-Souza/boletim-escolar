@@ -27,6 +27,16 @@ class TestLeituraEBusca(unittest.TestCase):
         with digitando("sete"), self.assertRaises(DadoInvalidoError):
             main.ler_numero("Nota: ")
 
+    def test_ler_obrigatorio_repete_ate_digitar(self):
+        saida = io.StringIO()
+        with digitando("", "   ", "Maria"), redirect_stdout(saida):
+            self.assertEqual(main.ler_obrigatorio("Nome: "), "Maria")
+        self.assertEqual(saida.getvalue().count("Campo obrigatório"), 2)
+
+    def test_ler_numero_vazio_pergunta_de_novo(self):
+        with digitando("", "7"), redirect_stdout(io.StringIO()):
+            self.assertEqual(main.ler_numero("Nota: "), 7.0)
+
     def test_buscar_aluno_ignora_maiusculas_e_espacos(self):
         maria = Aluno(nome="Maria", turma="9A")
         self.assertIs(main.buscar_aluno([maria], "  maria "), maria)
@@ -48,6 +58,12 @@ class TestOpcoesDoMenu(unittest.TestCase):
     def test_cadastrar(self):
         self.executar(main.cadastrar, "Maria", "9A")
         self.assertEqual(self.alunos[0].nome, "Maria")
+
+    def test_cadastrar_sem_nome_nao_avanca(self):
+        self.executar(main.cadastrar, "", "Maria", "", "9A")
+        self.assertEqual(self.alunos[0].nome, "Maria")
+        self.assertEqual(self.alunos[0].turma, "9A")
+        self.assertEqual(self.saida.getvalue().count("Campo obrigatório"), 2)
 
     def test_cadastrar_nome_repetido_gera_erro(self):
         self.executar(main.cadastrar, "Maria", "9A")
